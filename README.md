@@ -1,2 +1,2 @@
-# JAVA_SQL
-Java Sql Connection and Management Classes
+# JAVA_SQL.Manager
+A simple way to manage SQL connections
