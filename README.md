@@ -1,2 +1,2 @@
-# JAVA_SQL_Manager
-A simple way to manage SQL connections
+#  SQL-Connector 
+A simple way to create SQL connections
