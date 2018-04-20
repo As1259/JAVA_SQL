@@ -1,56 +1,42 @@
-package FaervelNaweh.sql.connector;/*
+/*
  * @author Andreas Schreiner
  */
-
+package FaervelNaweh.sql.connector;
 import javafx.collections.ObservableList;
-
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
 /**
  * Connector Class for  MYSQL/MariaDB
  */
 public class MYSQLConnector extends SQLConnector{
-
-
     /**
      *  Establishes a SQL Connection
-     * @param address
-     * @param port
-     * @param database
-     * @param user
-     * @param password
-     * @param verifyCertificate
-     * @param ssl
+     * @param address Adresse des SQL Servers
+     * @param port Port des SQL Servers
+     * @param database Namen der zu verwendenden Datenbank
+     * @param user Benutzernamen
+     * @param password Passwort
+     * @param verifyCertificate Auf Zertifikat Prüfen
+     * @param ssl SSL geschützte Verbindung
      */
-    public MYSQLConnector(String address, int port, String database,String user,
-                     String password, boolean verifyCertificate, boolean ssl){
-        String vc = "false";
-        String sslStatus = "false";
-        if (verifyCertificate){
-            vc = "true";
-        }
-        if (ssl){
-            sslStatus = "true";
-        }
-        try {
+    public MYSQLConnector(String address, int port, String database,String user, String password,
+            boolean verifyCertificate, boolean ssl)
+            throws ClassNotFoundException, IllegalAccessException, InstantiationException, SQLException {
+        String vc = verifyCertificate ? "true" : "false";
+        String sslStatus = ssl ? "true" : "false";
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            connect = DriverManager.getConnection("jdbc:mysql://"+ address + ":"+ port + "/"+ database +
-                    "?verifyServerCertificate="+ vc + "&useSSL=" + sslStatus, user , password);
-        } catch (Exception e) {
-            System.err.println(e);
-        }
+            connect = DriverManager.getConnection(
+                    "jdbc:mysql://"+ address
+                            + ":"+ port + "/"+ database
+                            + "?verifyServerCertificate="+ vc
+                            + "&useSSL=" + sslStatus,
+                            user , password);
     }
-    @Override
-    public String type() {
-        return "mysql";
-    }
-
     @Override
     public ObservableList<ObservableList> getTableNames() throws SQLException {
-        String sqlCMD  ="SELECT TABLE_NAME \n" +
+        String sqlCommandString  ="SELECT TABLE_NAME \n" +
                 "FROM INFORMATION_SCHEMA.TABLES\n" +
                 "WHERE TABLE_TYPE = 'BASE TABLE';";
-        return getRows(sqlCMD);
+        return getRows(sqlCommandString);
     }
 }

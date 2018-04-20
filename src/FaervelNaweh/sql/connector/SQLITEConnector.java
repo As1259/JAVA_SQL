@@ -1,11 +1,9 @@
-package FaervelNaweh.sql.connector;/*
+/*
  * @author Andreas Schreiner
  */
-
+package FaervelNaweh.sql.connector;
 import javafx.collections.ObservableList;
-
 import java.sql.*;
-
 /**
  * Connector Class for SQLLite
  */
@@ -13,25 +11,16 @@ public class SQLITEConnector extends SQLConnector {
 
     /**
      * Opens and or Creates SQLite DB
-     * @param name
+     * @param fileLocation Pfad zur SQLite Datei
      */
-    public SQLITEConnector(String name) {
-        String sslStatus = "false";
-        try {
-            Class.forName("org.sqlite.JDBC").newInstance();
-            connect = DriverManager.getConnection("jdbc:sqlite:" + name);
-        } catch (Exception e) {
-            System.err.println(e);
-        }
-    }
-    @Override
-    public String type() {
-        return "sqlite";
+    public SQLITEConnector(String fileLocation)
+            throws ClassNotFoundException, IllegalAccessException, InstantiationException, SQLException {
+        Class.forName("org.sqlite.JDBC").newInstance();
+        connect = DriverManager.getConnection("jdbc:sqlite:" + fileLocation);
     }
     @Override
     public ObservableList<ObservableList> getTableNames() throws SQLException {
-        String sqlCMD  =".tables;";
-        return getRows(sqlCMD);
+        String sqlCommandString  =".tables;";
+        return getRows(sqlCommandString);
     }
 }
-

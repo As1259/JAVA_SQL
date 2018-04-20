@@ -1,7 +1,7 @@
-package FaervelNaweh.sql.connector;/*
+/*
  * @author Andreas Schreiner
  */
-
+package FaervelNaweh.sql.connector;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -9,81 +9,53 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.util.Callback;
 import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.objects.annotations.Setter;
-
 import java.sql.*;
-
 /**
  * Abstract Connector Class
  */
-public abstract class SQLConnector {
-
-
-    public abstract String type();
-    public abstract ObservableList<ObservableList> getTableNames() throws SQLException;
-
+abstract class SQLConnector {
     /**
      * The SQL Connection
      */
-    protected Connection connect = null;
-
+    Connection connect = null;
+    public abstract ObservableList<ObservableList> getTableNames() throws SQLException;
     /**
      * Executes SQL Command if connection is open
      *
-     * @param sqlcmd
+     * @param sqlCommandString SQL String
      */
-    public void shell(String sqlcmd) {
-        try {
-            Statement st = connect.createStatement();
-            st.execute(sqlcmd);
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
+    public void shell(String sqlCommandString) throws SQLException {
+        Statement st = connect.createStatement();
+        st.execute(sqlCommandString);
     }
-
     /**
      * Executes SQL Command if connection is open
      * Retrieves Query Information
      *
-     * @param sqlcmd
+     * @param sqlCommandString SQL String
      * @return a ResultSet Containing the Result of a Query
      */
-    public ResultSet shellRS(String sqlcmd) {
-        try {
-            Statement st = connect.createStatement();
-            return st.executeQuery(sqlcmd);
-        } catch (SQLException e) {
-            return null;
-        }
-
+    public ResultSet shellRS(String sqlCommandString) throws SQLException {
+        Statement st = connect.createStatement();
+        return st.executeQuery(sqlCommandString);
     }
-
     /**
      * Closes and finalizes the Connection
      *
-     * @throws Exception
+     * @throws SQLException Wirft exception wenn null
      */
-    public void close() throws Exception {
-        try {
+    public void close() throws SQLException {
             connect.close();
-            this.finalize();
-        } catch (Throwable e) {
-        }
     }
     @Getter
-    public boolean isOpen() {
-        try {
+    public boolean isOpen() throws SQLException {
             if (connect == null) {
                 return false;
-            } else if (connect.isClosed()) {
-                return false;
-            }
-        } catch (SQLException e) {
-        }
-        return true;
+            } else return !connect.isClosed();
     }
-    public ObservableList<ObservableList> getRows(String SQLCmd) throws SQLException {
-        ResultSet rs = shellRS(SQLCmd);
+
+    public ObservableList<ObservableList> getRows(String sqlCommandString) throws SQLException {
+        ResultSet rs = shellRS(sqlCommandString);
         ObservableList<ObservableList> data;
         data = FXCollections.observableArrayList();
         while(rs.next()){
@@ -102,25 +74,18 @@ public abstract class SQLConnector {
         return data;
     }
 
-    public TableColumn[] getColumns(String SQLCmd) throws SQLException {
-        ResultSet rs = shellRS(SQLCmd);
+    public TableColumn[] getColumns(String sqlCommandString) throws SQLException {
+        ResultSet rs = shellRS(sqlCommandString);
         TableColumn tc[] =  new TableColumn[rs.getMetaData().getColumnCount()];
         for(int i=0 ; i<rs.getMetaData().getColumnCount(); i++){
             //We are using non property style for making dynamic table
             final int j = i;
-
             TableColumn col = new TableColumn(rs.getMetaData().getColumnName(i+1));
-            col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList,String>,ObservableValue<String>>(){
-                public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
-                    return new SimpleStringProperty(param.getValue().get(j).toString());
-                }
-            });
-
+            col.setCellValueFactory(
+                    (Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>)
+                            param -> new SimpleStringProperty(param.getValue().get(j).toString()));
             tc[i] = col;
         }
         return tc;
     }
-
-
 }
-
