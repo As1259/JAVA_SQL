@@ -1,11 +1,9 @@
-/*
+package FaervelNaweh.sql.connector;/*
  * @author Andreas Schreiner
  */
 
-package de.as1259.sql.connectors;
 import javafx.collections.ObservableList;
 
-import java.sql.Connection;
 import java.sql.*;
 
 /**
@@ -13,10 +11,6 @@ import java.sql.*;
  */
 public class SQLITEConnector extends SQLConnector {
 
-    public SQLITEConnector(String connectionName, String name) {
-        this(name);
-        setConnectionName(connectionName);
-    }
     /**
      * Opens and or Creates SQLite DB
      * @param name
@@ -26,11 +20,6 @@ public class SQLITEConnector extends SQLConnector {
         try {
             Class.forName("org.sqlite.JDBC").newInstance();
             connect = DriverManager.getConnection("jdbc:sqlite:" + name);
-            ADDRESS = name;
-            PORT = 0;
-            USER = "";
-            DATABASE ="";
-            SSL = false;
         } catch (Exception e) {
             System.err.println(e);
         }

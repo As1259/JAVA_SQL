@@ -1,19 +1,11 @@
-/*
+package FaervelNaweh.sql.connector;/*
  * @author Andreas Schreiner
  */
 
-package de.as1259.sql.connectors;
-
 import javafx.collections.ObservableList;
 
-import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Date;
-import java.util.Optional;
 
 /**
  * Connector Class for  MYSQL/MariaDB
@@ -21,11 +13,6 @@ import java.util.Optional;
 public class MYSQLConnector extends SQLConnector{
 
 
-    public MYSQLConnector(String connectionName, String address, int port, String database, String user,
-                          String password,boolean verifyCertificate, boolean ssl) {
-        this(address, port, database, user, password,verifyCertificate, ssl);
-        setConnectionName(connectionName);
-    }
     /**
      *  Establishes a SQL Connection
      * @param address
@@ -53,11 +40,6 @@ public class MYSQLConnector extends SQLConnector{
         } catch (Exception e) {
             System.err.println(e);
         }
-        ADDRESS = address;
-        PORT = port;
-        USER = user;
-        DATABASE =database;
-        SSL = ssl;
     }
     @Override
     public String type() {

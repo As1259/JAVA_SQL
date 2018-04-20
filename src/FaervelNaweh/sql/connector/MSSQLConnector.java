@@ -1,26 +1,16 @@
-/*
+package FaervelNaweh.sql.connector;/*
  * @author Andreas Schreiner
  */
 
 
-package de.as1259.sql.connectors;
-
 import javafx.collections.ObservableList;
 
-import java.sql.Connection;
 import java.sql.*;
 
 /**
  * Connector Class for Microsoft SQL
  */
 public class MSSQLConnector extends SQLConnector {
-
-
-    public MSSQLConnector(String connectionName, String address, int port, String database, String user,
-                          String password, boolean ssl) {
-        this(address, port, database, user, password, ssl);
-        setConnectionName(connectionName);
-    }
 
     /**
      * Establishes a SQL Connection
@@ -44,11 +34,7 @@ public class MSSQLConnector extends SQLConnector {
             connect = DriverManager.getConnection("jdbc:sqlserver://" + address + ":" +
                     port + ";databaseName=" + database + ";user=" + user +
                     ";password=" + password + ";&integratedSecurity=" + sslStatus);
-            ADDRESS = address;
-            PORT = port;
-            USER = user;
-            DATABASE = database;
-            SSL = ssl;
+
         } catch (Exception e) {
             System.err.println(e);
         }

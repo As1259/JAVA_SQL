@@ -1,8 +1,6 @@
-/*
+package FaervelNaweh.sql.connector;/*
  * @author Andreas Schreiner
  */
-
-package de.as1259.sql.connectors;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -20,13 +18,6 @@ import java.sql.*;
  */
 public abstract class SQLConnector {
 
-    protected final String VERSION = "V 2.0";
-    protected String ADDRESS;
-    protected String USER;
-    protected int PORT;
-    protected String DATABASE;
-    protected boolean SSL;
-    protected String CONNECTIONNAME = "";
 
     public abstract String type();
     public abstract ObservableList<ObservableList> getTableNames() throws SQLException;
@@ -91,34 +82,6 @@ public abstract class SQLConnector {
         }
         return true;
     }
-    @Setter
-    public void setConnectionName(String name) {
-        CONNECTIONNAME = name;
-    }
-    @Getter
-    public String getConnectionName() {
-        return CONNECTIONNAME;
-    }
-    @Getter
-    public String getAddress(){
-        return ADDRESS;
-    }
-    public int getPort(){
-        return PORT;
-    }
-    @Getter
-    public String getDatabase(){
-        return DATABASE;
-    }
-    @Getter
-    public String getUser(){
-        return USER;
-    }
-    @Getter
-    public String version() {
-        return VERSION;
-    }
-
     public ObservableList<ObservableList> getRows(String SQLCmd) throws SQLException {
         ResultSet rs = shellRS(SQLCmd);
         ObservableList<ObservableList> data;
