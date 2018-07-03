@@ -1,7 +1,7 @@
 /*
  * @author Andreas Schreiner
  */
-package FaervelNaweh.sql.connector;
+package de.Faervel.sql.connector;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;

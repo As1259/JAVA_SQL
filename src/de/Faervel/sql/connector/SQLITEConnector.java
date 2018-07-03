@@ -1,7 +1,7 @@
 /*
  * @author Andreas Schreiner
  */
-package FaervelNaweh.sql.connector;
+package de.Faervel.sql.connector;
 import javafx.collections.ObservableList;
 
 import java.lang.reflect.InvocationTargetException;
