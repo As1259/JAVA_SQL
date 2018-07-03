@@ -19,7 +19,7 @@ public class SQLITEConnector extends SQLConnector {
             throws ClassNotFoundException, IllegalAccessException, InstantiationException, SQLException,
             NoSuchMethodException, InvocationTargetException {
         Class.forName("org.sqlite.JDBC").getDeclaredConstructor().newInstance();
-        connect = DriverManager.getConnection("jdbc:sqlite:" + fileLocation);
+        connection = DriverManager.getConnection("jdbc:sqlite:" + fileLocation);
     }
     @Override
     public ObservableList<ObservableList> getTableNames() throws SQLException {

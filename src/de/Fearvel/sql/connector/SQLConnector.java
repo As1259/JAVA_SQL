@@ -17,15 +17,15 @@ abstract class SQLConnector {
     /**
      * The SQL Connection
      */
-    Connection connect = null;
+    protected Connection connection = null;
     public abstract ObservableList<ObservableList> getTableNames() throws SQLException;
     /**
      * Executes SQL Command if connection is open
      *
      * @param sqlCommandString SQL String
      */
-    public void shell(String sqlCommandString) throws SQLException {
-        Statement st = connect.createStatement();
+    public void NonQuery(String sqlCommandString) throws SQLException {
+        Statement st = connection.createStatement();
         st.execute(sqlCommandString);
     }
     /**
@@ -35,9 +35,28 @@ abstract class SQLConnector {
      * @param sqlCommandString SQL String
      * @return a ResultSet Containing the Result of a Query
      */
-    public ResultSet shellRS(String sqlCommandString) throws SQLException {
-        Statement st = connect.createStatement();
+    public ResultSet Query(String sqlCommandString) throws SQLException {
+        Statement st = connection.createStatement();
         return st.executeQuery(sqlCommandString);
+    }
+    /**
+     * Executes SQL Command if connection is open
+     * Retrieves Query Information
+     *
+     * @return a ResultSet Containing the Result of a Query
+     */
+    public ResultSet Query(PreparedStatement ps) throws SQLException {
+        return ps.executeQuery();
+    }
+
+    /**
+     * Allows prepared statements
+     *
+     * @param query sql string for creation of the prepared statement
+     * @return A prepared statement based on a sql String
+     */
+    public PreparedStatement GetPreparedStatement(String query) throws SQLException {
+        return connection.prepareStatement(query);
     }
     /**
      * Closes and finalizes the Connection
@@ -45,17 +64,17 @@ abstract class SQLConnector {
      * @throws SQLException Wirft exception wenn null
      */
     public void close() throws SQLException {
-            connect.close();
+            connection.close();
     }
     @Getter
     public boolean isOpen() throws SQLException {
-            if (connect == null) {
+            if (connection == null) {
                 return false;
-            } else return !connect.isClosed();
+            } else return !connection.isClosed();
     }
 
     public ObservableList<ObservableList> getRows(String sqlCommandString) throws SQLException {
-        ResultSet rs = shellRS(sqlCommandString);
+        ResultSet rs = Query(sqlCommandString);
         ObservableList<ObservableList> data;
         data = FXCollections.observableArrayList();
         while(rs.next()){
@@ -75,7 +94,7 @@ abstract class SQLConnector {
     }
 
     public TableColumn[] getColumns(String sqlCommandString) throws SQLException {
-        ResultSet rs = shellRS(sqlCommandString);
+        ResultSet rs = Query(sqlCommandString);
         TableColumn tc[] =  new TableColumn[rs.getMetaData().getColumnCount()];
         for(int i=0 ; i<rs.getMetaData().getColumnCount(); i++){
             //We are using non property style for making dynamic table

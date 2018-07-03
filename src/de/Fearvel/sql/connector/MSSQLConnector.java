@@ -24,7 +24,7 @@ public class MSSQLConnector extends SQLConnector {
             NoSuchMethodException, InvocationTargetException {
         String sslStatus = ssl ? "true" : "false";
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver").getDeclaredConstructor().newInstance();
-        connect = DriverManager.getConnection(
+        connection = DriverManager.getConnection(
                     "jdbc:sqlserver://" + address
                             + ":" + port
                             + ";databaseName=" + database

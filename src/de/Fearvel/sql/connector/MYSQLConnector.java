@@ -28,7 +28,7 @@ public class MYSQLConnector extends SQLConnector{
         String vc = verifyCertificate ? "true" : "false";
         String sslStatus = ssl ? "true" : "false";
             Class.forName("com.mysql.jdbc.Driver").getDeclaredConstructor().newInstance();
-            connect = DriverManager.getConnection(
+            connection = DriverManager.getConnection(
                     "jdbc:mysql://"+ address
                             + ":"+ port + "/"+ database
                             + "?verifyServerCertificate="+ vc
