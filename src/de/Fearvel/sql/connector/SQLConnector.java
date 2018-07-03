@@ -20,7 +20,7 @@ abstract class SQLConnector {
     protected Connection connection = null;
     public abstract ObservableList<ObservableList> getTableNames() throws SQLException;
     /**
-     * Executes SQL Command if connection is open
+     * Executes SQL NonQuery if connection is open
      *
      * @param sqlCommandString SQL String
      */
@@ -28,8 +28,17 @@ abstract class SQLConnector {
         Statement st = connection.createStatement();
         st.execute(sqlCommandString);
     }
+
     /**
-     * Executes SQL Command if connection is open
+     * Executes SQL NonQuery if connection is open
+     *
+     * @param ps prepared statement
+     */
+    public void NonQuery(PreparedStatement ps) throws SQLException {
+        ps.execute();
+    }
+    /**
+     * Executes SQL Query if connection is open
      * Retrieves Query Information
      *
      * @param sqlCommandString SQL String
@@ -40,9 +49,10 @@ abstract class SQLConnector {
         return st.executeQuery(sqlCommandString);
     }
     /**
-     * Executes SQL Command if connection is open
+     * Executes SQL Query if connection is open
      * Retrieves Query Information
      *
+     * @param ps prepared statement
      * @return a ResultSet Containing the Result of a Query
      */
     public ResultSet Query(PreparedStatement ps) throws SQLException {
