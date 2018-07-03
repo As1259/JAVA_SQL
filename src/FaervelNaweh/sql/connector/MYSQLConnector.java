@@ -3,6 +3,8 @@
  */
 package FaervelNaweh.sql.connector;
 import javafx.collections.ObservableList;
+
+import java.lang.reflect.InvocationTargetException;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 /**
@@ -21,10 +23,11 @@ public class MYSQLConnector extends SQLConnector{
      */
     public MYSQLConnector(String address, int port, String database,String user, String password,
             boolean verifyCertificate, boolean ssl)
-            throws ClassNotFoundException, IllegalAccessException, InstantiationException, SQLException {
+            throws ClassNotFoundException, IllegalAccessException, InstantiationException, SQLException,
+            NoSuchMethodException, InvocationTargetException {
         String vc = verifyCertificate ? "true" : "false";
         String sslStatus = ssl ? "true" : "false";
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            Class.forName("com.mysql.jdbc.Driver").getDeclaredConstructor().newInstance();
             connect = DriverManager.getConnection(
                     "jdbc:mysql://"+ address
                             + ":"+ port + "/"+ database

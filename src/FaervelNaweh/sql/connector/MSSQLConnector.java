@@ -3,6 +3,8 @@
  */
 package FaervelNaweh.sql.connector;
 import javafx.collections.ObservableList;
+
+import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 /**
  * Connector Class for Microsoft SQL
@@ -18,9 +20,10 @@ public class MSSQLConnector extends SQLConnector {
      * @param ssl SSL geschützte Verbindung
      */
     public MSSQLConnector(String address, int port, String database, String user, String password, boolean ssl)
-            throws ClassNotFoundException, IllegalAccessException, InstantiationException, SQLException {
+            throws ClassNotFoundException, IllegalAccessException, InstantiationException, SQLException,
+            NoSuchMethodException, InvocationTargetException {
         String sslStatus = ssl ? "true" : "false";
-        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver").newInstance();
+        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver").getDeclaredConstructor().newInstance();
         connect = DriverManager.getConnection(
                     "jdbc:sqlserver://" + address
                             + ":" + port

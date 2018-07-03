@@ -3,6 +3,8 @@
  */
 package FaervelNaweh.sql.connector;
 import javafx.collections.ObservableList;
+
+import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 /**
  * Connector Class for SQLLite
@@ -14,8 +16,9 @@ public class SQLITEConnector extends SQLConnector {
      * @param fileLocation Pfad zur SQLite Datei
      */
     public SQLITEConnector(String fileLocation)
-            throws ClassNotFoundException, IllegalAccessException, InstantiationException, SQLException {
-        Class.forName("org.sqlite.JDBC").newInstance();
+            throws ClassNotFoundException, IllegalAccessException, InstantiationException, SQLException,
+            NoSuchMethodException, InvocationTargetException {
+        Class.forName("org.sqlite.JDBC").getDeclaredConstructor().newInstance();
         connect = DriverManager.getConnection("jdbc:sqlite:" + fileLocation);
     }
     @Override
